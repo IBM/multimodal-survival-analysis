@@ -33,9 +33,7 @@ def flatten(container):
             yield i
 
 
-def as_structured_array(
-    dataframe: pd.DataFrame, target_name: str = "OS"
-) -> np.rec.recarray:
+def as_structured_array(dataframe: pd.DataFrame, target_name: str = "OS") -> np.rec.recarray:
     """Transforms labels from dataframe into structured array.
 
     Args:
@@ -129,21 +127,17 @@ def evaluate_pipeline(
     test_risk_scores = pipeline.predict(test_data)
     eval_preprocessing = make_pipeline(*[step for _, step in pipeline[:-1].steps])
     X_transformed = eval_preprocessing.transform(test_data)
-    test_survival_function = pipeline[-1].best_estimator_.predict_survival_function(
+    test_survival_function = pipeline[-1].best_estimator_.predict_survival_function(X_transformed)
+    test_cumulative_hazard = pipeline[-1].best_estimator_.predict_cumulative_hazard_function(
         X_transformed
     )
-    test_cumulative_hazard = pipeline[
-        -1
-    ].best_estimator_.predict_cumulative_hazard_function(X_transformed)
 
     np.save(output_path / "test_survival_function.npy", test_survival_function)
     np.save(output_path / "test_cumulative_hazard.npy", test_cumulative_hazard)
     np.save(output_path / "test_risk_scores.npy", test_risk_scores)
 
     y_df = pd.DataFrame.from_records(ytest)
-    cindex = concordance_index_censored(
-        y_df.iloc[:, 0], y_df.iloc[:, 1], test_risk_scores
-    )
+    cindex = concordance_index_censored(y_df.iloc[:, 0], y_df.iloc[:, 1], test_risk_scores)
     # time_col = [col for col in y_df.columns if col.endswith(".time")]
     # train_df = pd.DataFrame.from_records(ytrain)
     # train_time = train_df.filter(regex=".time")
@@ -217,14 +211,12 @@ def get_topk_features_cluster_pairs(
         for j in range(i + 1, anova_p_df.shape[1]):
             if k == "all":
                 all_k_p_df = (
-                    pd.DataFrame(anova_p_df.iloc[i, j], index=df_column_names)
-                    * correction
+                    pd.DataFrame(anova_p_df.iloc[i, j], index=df_column_names) * correction
                 ).sort_values(0)
                 top_k_p_df = all_k_p_df[all_k_p_df[0] < alpha]
             else:
                 top_k_p_df = (
-                    pd.DataFrame(anova_p_df.iloc[i, j], index=df_column_names)
-                    * correction
+                    pd.DataFrame(anova_p_df.iloc[i, j], index=df_column_names) * correction
                 ).sort_values(0)[:k]
             final_topk_df[(i, j)] = list(top_k_p_df.index)
 

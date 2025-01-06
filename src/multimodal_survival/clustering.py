@@ -50,9 +50,7 @@ class Clustering:
 
         for key, value in metric.items():
             if value:
-                scores[key].append(
-                    CLUSTERING_METRIC_FACTORY[key](true_labels, pred_labels)
-                )
+                scores[key].append(CLUSTERING_METRIC_FACTORY[key](true_labels, pred_labels))
 
         return scores
 
@@ -107,9 +105,7 @@ class Clustering:
         plt.ylabel("Clustering Score")
         plt.savefig(save_here)
 
-    def clustering(
-        self, data: ArrayLike, method: str, n_clusters: int, **kwargs
-    ) -> Tuple:
+    def clustering(self, data: ArrayLike, method: str, n_clusters: int, **kwargs) -> Tuple:
         """Clustering function.
 
         Args:
@@ -121,9 +117,7 @@ class Clustering:
             Fit clustering model, predicted cluster labels and cluster centres.
         """
         # runs clustering from sklearn's clustering module
-        clustering_obj = CLUSTERING_METHOD_FACTORY[method](
-            n_clusters=n_clusters, **kwargs
-        )
+        clustering_obj = CLUSTERING_METHOD_FACTORY[method](n_clusters=n_clusters, **kwargs)
         clustering_obj.fit(data)
         clustering_labels = clustering_obj.labels_
         if hasattr(clustering_obj, "cluster_centers_"):
@@ -133,9 +127,7 @@ class Clustering:
 
         return clustering_obj, clustering_labels, cluster_centres
 
-    def kmeans_elbow(
-        self, data: ArrayLike, n_clusters: Iterable, filepath: str, **kwargs
-    ) -> Tuple:
+    def kmeans_elbow(self, data: ArrayLike, n_clusters: Iterable, filepath: str, **kwargs) -> Tuple:
         """Performs k-means clustering and selects best model using elbow method.
 
         Args:
@@ -151,16 +143,12 @@ class Clustering:
         kmeans_objs = {}
         cluster_metrics = {}
         for k in n_clusters:
-            km = KMeans(
-                init="k-means++", n_clusters=k, random_state=42, n_init=10, **kwargs
-            )
+            km = KMeans(init="k-means++", n_clusters=k, random_state=42, n_init=10, **kwargs)
             km = km.fit(data)
             sum_of_squared_distances.append(km.inertia_)
             kmeans_objs[k] = km
 
-            silhouette_avg = CLUSTERING_METRIC_FACTORY["silhouette_avg"](
-                data, km.labels_
-            )
+            silhouette_avg = CLUSTERING_METRIC_FACTORY["silhouette_avg"](data, km.labels_)
             cluster_metrics[k] = silhouette_avg
 
         kneedle = KneeLocator(
@@ -213,9 +201,7 @@ class Clustering:
 
         ax1.set_ylim([0, len(data) + (k + 1) * 10])
 
-        silhouette_avg = CLUSTERING_METRIC_FACTORY["silhouette_avg"](
-            data, cluster_labels
-        )
+        silhouette_avg = CLUSTERING_METRIC_FACTORY["silhouette_avg"](data, cluster_labels)
         print(
             "For n_clusters =",
             k,
@@ -245,11 +231,8 @@ class Clustering:
         ]
 
         for i in range(k):
-
             color = colors[i % len(colors)]
-            ith_cluster_silhouette_values = sample_silhouette_values[
-                cluster_labels == i
-            ]
+            ith_cluster_silhouette_values = sample_silhouette_values[cluster_labels == i]
 
             ith_cluster_silhouette_values.sort()
 
@@ -378,9 +361,7 @@ class Clustering:
 
         for n in n_components:
             # Fit a Gaussian mixture with EM
-            gmm = mixture.GaussianMixture(
-                n_components=n, covariance_type=cv_type, random_state=42
-            )
+            gmm = mixture.GaussianMixture(n_components=n, covariance_type=cv_type, random_state=42)
 
             gmm.fit(data)
 

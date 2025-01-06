@@ -32,7 +32,6 @@ LIST_DATASETS = [
 @click.option("--save_dir", help="Path to save results.")
 @click.option("--k_features", default="all", help="Top k features to visualise.")
 def main(data_root_dir, clustering_result_dict_path, save_dir, k_features):
-
     with open(clustering_result_dict_path, "rb") as f:
         kmeans_result_dict = pickle.load(f)
     sns.set(context="poster", style="white")
@@ -42,9 +41,7 @@ def main(data_root_dir, clustering_result_dict_path, save_dir, k_features):
         df = pd.read_csv(data_root_dir / file, index_col=0)
         df = df.dropna(axis=1, how="all")
         df_columns = df.columns
-        df = pd.DataFrame(
-            SimpleImputer(strategy="median").fit_transform(df), columns=df_columns
-        )
+        df = pd.DataFrame(SimpleImputer(strategy="median").fit_transform(df), columns=df_columns)
         n_features = df.shape[1]
 
         kmeans_obj = kmeans_result_dict[dataset]["model"]
@@ -74,9 +71,7 @@ def main(data_root_dir, clustering_result_dict_path, save_dir, k_features):
 
             all_features = np.unique(all_features)
 
-            count_matrix = pd.DataFrame(
-                0, index=all_features, columns=count_dict.keys()
-            )
+            count_matrix = pd.DataFrame(0, index=all_features, columns=count_dict.keys())
 
             # Fill the count matrix
             for col in count_dict.keys():
@@ -103,9 +98,7 @@ def main(data_root_dir, clustering_result_dict_path, save_dir, k_features):
         )  # Keep y-axis labels horizontal with reduced font size
 
         plt.xlabel("Cluster Pairs", fontsize=32)
-        plt.savefig(
-            save_dir / f"{dataset}_feature_importance.pdf", bbox_inches="tight", dpi=300
-        )
+        plt.savefig(save_dir / f"{dataset}_feature_importance.pdf", bbox_inches="tight", dpi=300)
 
 
 if __name__ == "__main__":

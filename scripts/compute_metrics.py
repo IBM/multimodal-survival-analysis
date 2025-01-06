@@ -8,9 +8,7 @@ import numpy as np
 import pandas as pd
 
 
-def get_metrics_df(
-    main_dir: Path, modality: str, target: str, survival_model: str
-) -> pd.DataFrame:
+def get_metrics_df(main_dir: Path, modality: str, target: str, survival_model: str) -> pd.DataFrame:
     """Compiles survival scores from all splits into one dataframe.
 
     Args:
@@ -39,9 +37,7 @@ def get_metrics_df(
 
 @click.command()
 @click.option("--main_dir", required=True, type=click.Path(path_type=Path, exists=True))
-@click.option(
-    "--target", required=True, help="name of the survival target.", default="OS"
-)
+@click.option("--target", required=True, help="name of the survival target.", default="OS")
 @click.option(
     "--survival_model",
     required=True,
@@ -55,9 +51,7 @@ def main(
     survival_model: str,
     ignore_folders={"old", "zero_imputation", "summary_results"},
 ):
-    modalities = [
-        folder for folder in os.listdir(main_dir) if folder not in ignore_folders
-    ]
+    modalities = [folder for folder in os.listdir(main_dir) if folder not in ignore_folders]
     mean_metrics_df = pd.DataFrame(index=modalities, columns=["mean_cindex"])
     for modality in modalities:
         metrics_all = get_metrics_df(main_dir, modality, target, survival_model)

@@ -9,9 +9,7 @@ from multimodal_survival.utilities.registries import OPTIMIZER_SCHEDULERS, OPTIM
 
 
 class AutoEncoder(pl.LightningModule):
-    def __init__(
-        self, encoder: Callable, decoder: Callable, train_params: dict
-    ) -> None:
+    def __init__(self, encoder: Callable, decoder: Callable, train_params: dict) -> None:
         """Constructor.
 
         Args:

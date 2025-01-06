@@ -30,9 +30,7 @@ from sklearn.pipeline import make_pipeline
     required=True,
     type=click.Path(path_type=Path, exists=True, help="Path to data directory."),
 )
-@click.option(
-    "--train_filename", required=True, type=str, help="Filename of training dataset."
-)
+@click.option("--train_filename", required=True, type=str, help="Filename of training dataset.")
 @click.option(
     "--parameters_file",
     required=True,
@@ -65,9 +63,7 @@ from sklearn.pipeline import make_pipeline
     type=int,
     help="Number of jobs to run for parallel processing.",
 )
-@click.option(
-    "--seed", required=False, default=42, type=int, help="Seed for reproducibility."
-)
+@click.option("--seed", required=False, default=42, type=int, help="Seed for reproducibility.")
 @click.option(
     "--save_pipeline",
     required=False,
@@ -95,7 +91,6 @@ def main(
     save_pipeline: bool,
     save_best: bool,
 ) -> None:
-
     with open(parameters_file) as fp:
         parameters = json.load(fp)
 
@@ -105,9 +100,7 @@ def main(
         ), "Please provide a non-empty filename to retrieve test indices."
         train_test_indices_path = parameters["train_test_indices"]
     else:
-        raise KeyError(
-            "Please provide the test indices filename with key <train_test_indices>."
-        )
+        raise KeyError("Please provide the test indices filename with key <train_test_indices>.")
 
     merged_data = pd.read_csv(os.path.join(data_path, train_filename), index_col=0)
 
@@ -150,15 +143,15 @@ def main(
 
         # convert labels into structured array
         structured_train_labels = train_labels[[target_name, f"{target_name}.time"]]
-        structured_train_labels.loc[:, target_name] = structured_train_labels[
-            target_name
-        ].astype(bool)
+        structured_train_labels.loc[:, target_name] = structured_train_labels[target_name].astype(
+            bool
+        )
         structured_train_labels = structured_train_labels.to_records(index=False)
 
         structured_test_labels = test_labels[[target_name, f"{target_name}.time"]]
-        structured_test_labels.loc[:, target_name] = structured_test_labels[
-            target_name
-        ].astype(bool)
+        structured_test_labels.loc[:, target_name] = structured_test_labels[target_name].astype(
+            bool
+        )
         structured_test_labels = structured_test_labels.to_records(index=False)
 
         cross_val = parameters["cross_val"]
@@ -166,9 +159,7 @@ def main(
 
         imputer_whole = parameters["imputer_whole"]
 
-        imputer_whole_obj = FEATURE_IMPUTERS[imputer_whole["name"]](
-            **imputer_whole["args"]
-        )
+        imputer_whole_obj = FEATURE_IMPUTERS[imputer_whole["name"]](**imputer_whole["args"])
         feature_selector = parameters["feature_selector"]
         feature_selector_obj = FEATURE_SELECTORS[feature_selector["name"]](
             **feature_selector["args"]
@@ -236,9 +227,7 @@ def main(
             )
             joblib.dump(best_pipeline, output_dir / "best_estimator.pkl")
 
-    with open(
-        output_path / model_name / parameters["scorer"] / "params.json", "w"
-    ) as fp:
+    with open(output_path / model_name / parameters["scorer"] / "params.json", "w") as fp:
         json.dump(parameters, fp)
 
 

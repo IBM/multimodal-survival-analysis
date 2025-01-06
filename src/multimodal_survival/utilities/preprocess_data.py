@@ -34,9 +34,7 @@ def process_unimodal(
     """
     pancan_df = pd.read_csv(pancan_path, index_col=0)
     crc_df = pancan_df[
-        pancan_df["_primary_disease"].isin(
-            ["colon adenocarcinoma", "rectum adenocarcinoma"]
-        )
+        pancan_df["_primary_disease"].isin(["colon adenocarcinoma", "rectum adenocarcinoma"])
     ]
     crc_df = crc_df.drop(columns=cols_to_drop)
     crc_df.columns = mode + "_" + crc_df.columns
@@ -76,9 +74,7 @@ def merge_omics(
     omics_df = []
     for f in omics_files:
         omics_df.append(pd.read_csv(Path(omics_dir) / f))
-    merged_omics = reduce(
-        lambda left, right: pd.merge(left, right, on=id_col, how=join), omics_df
-    )
+    merged_omics = reduce(lambda left, right: pd.merge(left, right, on=id_col, how=join), omics_df)
 
     if join == "outer":
         filename = "merged_omics.csv"

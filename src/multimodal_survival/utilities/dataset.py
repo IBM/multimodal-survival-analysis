@@ -21,9 +21,7 @@ def get_datasets(train_filepath: str, test_filepath: str, pipeline: Pipeline) ->
     train_data = pd.read_csv(train_filepath, index_col=0)
     test_data = pd.read_csv(test_filepath, index_col=0)
     train_dataset = OmicsDataset(train_data, pipeline)
-    test_dataset = OmicsDataset(
-        test_data, train_dataset.preprocessing_pipeline, eval=True
-    )
+    test_dataset = OmicsDataset(test_data, train_dataset.preprocessing_pipeline, eval=True)
 
     return train_dataset, test_dataset
 

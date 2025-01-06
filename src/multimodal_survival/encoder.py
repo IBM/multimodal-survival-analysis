@@ -18,11 +18,9 @@ class MLPEncoder(nn.Module):
         self.input_size = train_params["input_size"]
         self.h_size = train_params["fc_units"]
 
-        self.enc_params.update(
-            {
-                "fc_units": train_params["fc_units"] + self.latent_dim,
-            }
-        )
+        self.enc_params.update({
+            "fc_units": train_params["fc_units"] + self.latent_dim,
+        })
 
         self.encoder = MLPLayer(self.enc_params)
 

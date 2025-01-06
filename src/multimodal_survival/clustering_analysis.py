@@ -180,13 +180,7 @@ def analyse_cluster_targets(
     cluster_labels_df = pd.Series(cluster_labels, index=df.index)
     label_distribution_across_clusters = dict()
     for target in pd.unique(targets[target_name]):
-        target_idx = (
-            targets.loc[common_labels]
-            .query(f"{target_name} == '{target}'")
-            .index.tolist()
-        )
-        label_distribution_across_clusters[str(target)] = Counter(
-            cluster_labels_df[target_idx]
-        )
+        target_idx = targets.loc[common_labels].query(f"{target_name} == '{target}'").index.tolist()
+        label_distribution_across_clusters[str(target)] = Counter(cluster_labels_df[target_idx])
 
     return label_distribution_across_clusters

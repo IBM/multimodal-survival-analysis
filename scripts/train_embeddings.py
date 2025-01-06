@@ -79,9 +79,7 @@ def train_autoencoder(
         devices=1,
         max_epochs=epochs,
         callbacks=[
-            EarlyStopping(
-                monitor="val_loss", patience=es_patience, check_on_train_epoch_end=False
-            ),
+            EarlyStopping(monitor="val_loss", patience=es_patience, check_on_train_epoch_end=False),
             ModelCheckpoint(
                 save_top_k=2,
                 monitor="val_loss",
@@ -94,9 +92,7 @@ def train_autoencoder(
         ],
     )
 
-    trainer.logger._log_graph = (
-        True  # If True, we plot the computation graph in tensorboard
-    )
+    trainer.logger._log_graph = True  # If True, we plot the computation graph in tensorboard
 
     # Check whether pretrained model exists. If yes, load it and skip training
     pretrained_filename = output_path / f"embeddings_{latent_dim}" / modality / "*.ckpt"
@@ -117,9 +113,7 @@ def train_autoencoder(
 
 
 @click.command()
-@click.option(
-    "--model_name", required=True, help="name of the model to use.", default="AE"
-)
+@click.option("--model_name", required=True, help="name of the model to use.", default="AE")
 @click.option(
     "--modality",
     required=True,
@@ -127,9 +121,7 @@ def train_autoencoder(
     default="AE",
 )
 @click.option("--latent_dim", required=True, default=128, type=int)
-@click.option(
-    "--data_path", required=True, type=click.Path(path_type=Path, exists=True)
-)
+@click.option("--data_path", required=True, type=click.Path(path_type=Path, exists=True))
 @click.option(
     "--parameters_file",
     required=True,
@@ -219,14 +211,10 @@ def main(
         output_dir,
     )
 
-    with open(
-        output_dir / f"embeddings_{latent_dim}" / modality / "results.json", "w"
-    ) as fp:
+    with open(output_dir / f"embeddings_{latent_dim}" / modality / "results.json", "w") as fp:
         json.dump(result, fp)
 
-    with open(
-        output_dir / f"embeddings_{latent_dim}" / modality / "params.json", "w"
-    ) as fp:
+    with open(output_dir / f"embeddings_{latent_dim}" / modality / "params.json", "w") as fp:
         json.dump(parameters, fp)
 
     # save latent embeddings
@@ -238,8 +226,5 @@ def main(
     # save pipeline
     joblib.dump(
         train_dataset.preprocessing_pipeline,
-        output_dir
-        / f"embeddings_{latent_dim}"
-        / modality
-        / "data_transform_pipeline.pkl",
+        output_dir / f"embeddings_{latent_dim}" / modality / "data_transform_pipeline.pkl",
     )

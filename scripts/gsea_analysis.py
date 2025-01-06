@@ -64,7 +64,6 @@ def main(
     save_dir,
     k_features,
 ):
-
     with open(clustering_result_dict_path, "rb") as f:
         kmeans_result_dict = pickle.load(f)
 
@@ -83,9 +82,7 @@ def main(
     df = pd.read_csv(data_root_dir / file, index_col=0)
     df = df.dropna(axis=1, how="all")
     df_columns = df.columns
-    df = pd.DataFrame(
-        SimpleImputer(strategy="median").fit_transform(df), columns=df_columns
-    )
+    df = pd.DataFrame(SimpleImputer(strategy="median").fit_transform(df), columns=df_columns)
     kmeans_obj = kmeans_result_dict[dataset]["model"]
     _, p_df = pairwise_anova(df, kmeans_obj)
 
@@ -112,14 +109,10 @@ def main(
     )
     cluster_gene_list.append(dna_meth_mapper(dna_probe_list, dna_probe_map))
 
-    cluster_features_protein_genes = (
-        set(cluster_features) - set(mirna_list) - set(dna_probe_list)
-    )
+    cluster_features_protein_genes = set(cluster_features) - set(mirna_list) - set(dna_probe_list)
 
     protein_genes = [
-        value
-        for key, value in PROTEIN_MAP.items()
-        if key in cluster_features_protein_genes
+        value for key, value in PROTEIN_MAP.items() if key in cluster_features_protein_genes
     ]
     cluster_features_genes = cluster_features_protein_genes - set(PROTEIN_MAP.keys())
 
@@ -143,13 +136,9 @@ def main(
     )
 
     bg_protein_genes = [
-        value
-        for key, value in PROTEIN_MAP.items()
-        if key in background_features_protein_genes
+        value for key, value in PROTEIN_MAP.items() if key in background_features_protein_genes
     ]
-    background_features_genes = background_features_protein_genes - set(
-        PROTEIN_MAP.keys()
-    )
+    background_features_genes = background_features_protein_genes - set(PROTEIN_MAP.keys())
 
     background_gene_list += bg_protein_genes + list(background_features_genes)
     background_gene_list = list(flatten(background_gene_list))
@@ -163,9 +152,7 @@ def main(
         background=set(map(str.upper, background_gene_list)),
     )
     # save results
-    enr_bg.results.sort_values("Adjusted P-value").to_csv(
-        save_dir / "gsea_analysis.csv"
-    )
+    enr_bg.results.sort_values("Adjusted P-value").to_csv(save_dir / "gsea_analysis.csv")
 
 
 if __name__ == "__main__":
