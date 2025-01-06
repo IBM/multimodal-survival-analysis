@@ -1,7 +1,6 @@
 from typing import Any, Dict, Type
 
 import torch.nn as nn
-from lion_pytorch import Lion
 from sklearn import metrics
 from sklearn.base import TransformerMixin
 from sklearn.cluster import DBSCAN, AgglomerativeClustering, KMeans, SpectralClustering
@@ -19,8 +18,6 @@ from sksurv.metrics import (
 )
 from torch.optim import Adam
 from torch.optim.lr_scheduler import CyclicLR, ExponentialLR, ReduceLROnPlateau
-
-from multimodal_survival.other_models import TrainMAUI, TrainMove
 
 SURVIVAL_MODELS: Dict[str, Any] = {
     "coxph": CoxPHSurvivalAnalysis,
@@ -54,7 +51,7 @@ FEATURE_TRANSFORMERS: Dict[str, Type[TransformerMixin]] = {
     "standard": StandardScaler,
 }
 
-OPTIMIZERS = {"adam": Adam, "lion": Lion}
+OPTIMIZERS = {"adam": Adam}
 
 OPTIMIZER_SCHEDULERS = {
     "plateau": ReduceLROnPlateau,
@@ -89,5 +86,3 @@ CLUSTERING_METRIC_FACTORY = {
     "completeness": metrics.completeness_score,
     "vmeasure": metrics.v_measure_score,
 }
-
-OTHER_MODELS = {"move": TrainMove, "maui": TrainMAUI}
