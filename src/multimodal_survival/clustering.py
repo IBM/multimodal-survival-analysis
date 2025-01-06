@@ -19,7 +19,7 @@ sns.set(context="poster", style="white")
 
 
 class Clustering:
-    def __init__(self):
+    def __init__(self) -> None:
         pass
 
     def compute_metric(
@@ -86,7 +86,7 @@ class Clustering:
 
         score_list = []
         for k in n_clusters:
-            obj, pred_lbl, _ = self.clustering(data, method, k, **kwargs)
+            _, pred_lbl, _ = self.clustering(data, method, k, **kwargs)
             score_list.append(self.compute_metric(true_labels, pred_lbl, metric))
 
         scores = {key: [d.get(key) for d in score_list] for key in metric.keys()}

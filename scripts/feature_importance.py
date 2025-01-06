@@ -4,14 +4,15 @@ import pickle
 import click
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import seaborn as sns
-from sklearn.impute import SimpleImputer
 
-from multimodal_survival.clustering_analysis import *
+# from multimodal_survival.clustering_analysis import *
 from multimodal_survival.utilities.utils import (
     get_topk_features_cluster_pairs,
     pairwise_anova,
 )
+from sklearn.impute import SimpleImputer
 
 LIST_DATASETS = [
     "rppa_coadread_literature11_df_stdz",
@@ -36,7 +37,7 @@ def main(data_root_dir, clustering_result_dict_path, save_dir, k_features):
         kmeans_result_dict = pickle.load(f)
     sns.set(context="poster", style="white")
     for dataset in LIST_DATASETS:
-        fig, ax = plt.subplots(figsize=(16, 9))
+        _, ax = plt.subplots(figsize=(16, 9))
         file = dataset + ".csv"
         df = pd.read_csv(data_root_dir / file, index_col=0)
         df = df.dropna(axis=1, how="all")
@@ -47,7 +48,7 @@ def main(data_root_dir, clustering_result_dict_path, save_dir, k_features):
         n_features = df.shape[1]
 
         kmeans_obj = kmeans_result_dict[dataset]["model"]
-        f_df, p_df = pairwise_anova(df, kmeans_obj)
+        _, p_df = pairwise_anova(df, kmeans_obj)
 
         counts = get_topk_features_cluster_pairs(
             p_df, df_columns, k=k_features, n_features=n_features

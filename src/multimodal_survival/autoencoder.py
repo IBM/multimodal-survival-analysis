@@ -2,7 +2,6 @@ from typing import Callable, List, Tuple
 
 import lightning as pl
 import torch
-import torch.nn as nn
 from lightning.pytorch.utilities.types import OptimizerLRScheduler
 from torchmetrics import MeanSquaredError
 

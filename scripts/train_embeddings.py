@@ -18,9 +18,6 @@ from lightning.pytorch.callbacks import (
     LearningRateMonitor,
     ModelCheckpoint,
 )
-from sklearn.pipeline import make_pipeline
-from torch.utils.data import DataLoader
-
 from multimodal_survival.autoencoder import AutoEncoder
 from multimodal_survival.decoder import MLPDecoder
 from multimodal_survival.encoder import MLPEncoder
@@ -29,6 +26,8 @@ from multimodal_survival.utilities.registries import (
     FEATURE_IMPUTERS,
     FEATURE_TRANSFORMERS,
 )
+from sklearn.pipeline import make_pipeline
+from torch.utils.data import DataLoader
 
 matplotlib_inline.backend_inline.set_matplotlib_formats("svg", "pdf")  # For export
 matplotlib.rcParams["lines.linewidth"] = 2.0

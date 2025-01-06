@@ -11,9 +11,6 @@ import joblib
 import numpy as np
 import pandas as pd
 from loguru import logger
-from sklearn.model_selection import GridSearchCV
-from sklearn.pipeline import make_pipeline
-
 from multimodal_survival.utilities.registries import (
     CROSS_VALIDATION,
     FEATURE_IMPUTERS,
@@ -23,6 +20,8 @@ from multimodal_survival.utilities.registries import (
     SURVIVAL_MODELS,
 )
 from multimodal_survival.utilities.utils import cut_tcga_id, evaluate_pipeline
+from sklearn.model_selection import GridSearchCV
+from sklearn.pipeline import make_pipeline
 
 
 @click.command()

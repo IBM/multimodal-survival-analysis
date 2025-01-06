@@ -145,8 +145,8 @@ def evaluate_pipeline(
         y_df.iloc[:, 0], y_df.iloc[:, 1], test_risk_scores
     )
     # time_col = [col for col in y_df.columns if col.endswith(".time")]
-    train_df = pd.DataFrame.from_records(ytrain)
-    train_time = train_df.filter(regex=".time")
+    # train_df = pd.DataFrame.from_records(ytrain)
+    # train_time = train_df.filter(regex=".time")
     time_col = y_df.filter(regex=".time")
     min_time, max_time = time_col.min().values, time_col.max().values
     min_time, max_time = 0, 1825
@@ -307,7 +307,7 @@ def dna_meth_mapper(probe_list: List, probemap: pd.DataFrame) -> List:
         Mapped list of genes.
     """
     probe_to_gene_list = []
-    mg = mygene.MyGeneInfo()
+    # mg = mygene.MyGeneInfo()
     mapped_genes = probemap.loc[probe_list]["gene"].str.split(",").to_list()
     probe_to_gene_list.append(mapped_genes)
 

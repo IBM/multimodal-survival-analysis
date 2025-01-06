@@ -1,20 +1,18 @@
 # Script to run gene set enrichment analysis.
 import fnmatch
 import pickle
-from itertools import combinations
-from pathlib import Path
 
 import click
 import gseapy as gp
-import mygene
-import numpy as np
 import pandas as pd
-import seaborn as sns
-from scipy.stats import f_oneway
+from multimodal_survival.utilities.utils import (
+    dna_meth_mapper,
+    flatten,
+    get_topk_features_cluster_pairs,
+    mirna_mapper_mirmap,
+    pairwise_anova,
+)
 from sklearn.impute import SimpleImputer
-
-from multimodal_survival.utilities.utils import *
-from multimodal_survival.utilities.utils import flatten
 
 PROTEIN_MAP = {
     "BETACATENIN": "CTNNB1",
@@ -89,7 +87,7 @@ def main(
         SimpleImputer(strategy="median").fit_transform(df), columns=df_columns
     )
     kmeans_obj = kmeans_result_dict[dataset]["model"]
-    f_df, p_df = pairwise_anova(df, kmeans_obj)
+    _, p_df = pairwise_anova(df, kmeans_obj)
 
     count_df = get_topk_features_cluster_pairs(p_df, df_columns, k=k_features)
     # Get unique features
