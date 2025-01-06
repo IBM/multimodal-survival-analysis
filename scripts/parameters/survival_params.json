@@ -1,0 +1,37 @@
+{
+    "train_filename": "merged_wsi_omics.csv",
+    "train_test_indices": "train_test_indices.json",
+    "label_filename": "merged_wsi_omics_labels.csv",
+    "test_patient_col": "patient_id",
+    "imputer_whole": {
+        "name": "knn",
+        "args": {
+            "n_neighbors": 5,
+            "weights": "uniform"
+        }
+    },
+    "imputer_whole_depr": {
+        "name": "simple",
+        "args": {
+            "strategy": "constant",
+            "fill_value": 0.0
+        }
+    },
+    "cross_val": {
+        "name": "repeated_stratified_kfold",
+        "args": {
+            "n_repeats": 1,
+            "n_splits": 2
+        }
+    },
+    "scaler": "standard",
+    "feature_selector": {
+        "name": "variance",
+        "args": {
+            "threshold": 0.005
+        }
+    },
+    "scorer": "cindex",
+    "scorer_wrapper_args": {},
+    "params_search_space": ""
+}

@@ -1,0 +1,26 @@
+{
+    "imputer": {
+        "name": "knn",
+        "args": {
+            "n_neighbors": 5,
+            "weights": "uniform"
+        }
+    },
+    "imputer_whole_depr": {
+        "name": "simple",
+        "args": {
+            "strategy": "constant",
+            "fill_value": 0.0
+        }
+    },
+    "cross_val": {
+        "name": "repeated_stratified_kfold",
+        "args": {
+            "n_repeats": 1,
+            "n_splits": 2
+        }
+    },
+    "scaler": "standard",
+    "tune_model": "True"
+    
+}
