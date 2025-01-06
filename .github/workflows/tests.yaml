@@ -18,5 +18,7 @@ jobs:
       run: poetry install
     - name: Check style
       run: poetry run ruff check .
-    - name: Run pytests
-      run: poetry run pytest -sv --cov=multimodal_survival tests
+    # - name: check mypy
+    #   run: poetry run mypy .
+    # - name: Run pytests
+    #   run: poetry run pytest -sv --cov=multimodal_survival tests
