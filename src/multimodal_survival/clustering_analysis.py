@@ -15,6 +15,7 @@ def run_clustering_analysis_with_elbow(
     embedding_method: Callable,
     n_clusters: Iterable,
     save_dir: Path,
+    **kwargs: Dict,
 ) -> Tuple:
     """Performs clustering with k-means for different k and selects best k by elbow method.
 
@@ -34,7 +35,7 @@ def run_clustering_analysis_with_elbow(
     if df.isna().sum().sum() > 0:
         df = imputer.fit_transform(df)
     best_km, silhouette_metrics = clustering_object.kmeans_elbow(
-        df, n_clusters, save_dir / f"kmeans_elbow_{data_dir.stem}.pdf"
+        df, n_clusters, save_dir / f"kmeans_elbow_{data_dir.stem}.pdf", **kwargs
     )
     df_pred_labels = best_km.labels_
     silhoutte_avg = clustering_object.plot_silhouette_analysis(
@@ -180,7 +181,13 @@ def analyse_cluster_targets(
     cluster_labels_df = pd.Series(cluster_labels, index=df.index)
     label_distribution_across_clusters = dict()
     for target in pd.unique(targets[target_name]):
-        target_idx = targets.loc[common_labels].query(f"{target_name} == '{target}'").index.tolist()
-        label_distribution_across_clusters[str(target)] = Counter(cluster_labels_df[target_idx])
+        target_idx = (
+            targets.loc[common_labels]
+            .query(f"{target_name} == '{target}'")
+            .index.tolist()
+        )
+        label_distribution_across_clusters[str(target)] = Counter(
+            cluster_labels_df[target_idx]
+        )
 
     return label_distribution_across_clusters
