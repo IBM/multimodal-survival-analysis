@@ -27,10 +27,15 @@ Similarly, to run GSEA or compute feature importance, use the ```gsea-analysis``
 
 ## Citation
 ```
-@article{janakarajan2024multiclustersurvival,
+@article{janakarajan2025multi,
   title={Multi-modal clustering reveals event-free patient subgroup in colorectal cancer survival},
-  author={Janakarajan, Nikita and Larghero, Guillaume and Martinez, Maria Rodriguez},
-  year={2024},
+  author={Janakarajan, Nikita and Larghero, Guillaume and Rodr{\'\i}guez Mart{\'\i}nez, Mar{\'\i}a},
+  journal={npj Systems Biology and Applications},
+  volume={11},
+  number={1},
+  pages={86},
+  year={2025},
+  publisher={Nature Publishing Group UK London}
 }
 ```
 ## IBM Public Repository Disclosure
